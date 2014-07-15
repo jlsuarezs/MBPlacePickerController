@@ -331,9 +331,10 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
             /**
              *  ...and attempt to call the delegate.
              */
-            if ([self.delegate respondsToSelector:@selector(placePickerController:didChangeToPlace:)])
+            if ([[self delegate] respondsToSelector:@selector(placePickerController:didChangeToPlace:)])
             {
                 [[self delegate] placePickerController:self didChangeToPlace:lastLocation];
+                [self dismiss];
             }
         }
     }];
@@ -549,8 +550,9 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Call the delegate method with the place.
      */
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(placePickerController:didChangeToPlace:)]) {
-        [self.delegate placePickerController:self didChangeToPlace:place];
+    if ([self delegate] && [[self delegate] respondsToSelector:@selector(placePickerController:didChangeToPlace:)]) {
+        [[self delegate] placePickerController:self didChangeToPlace:place];
+        [self dismiss];
     }
     
     /**
