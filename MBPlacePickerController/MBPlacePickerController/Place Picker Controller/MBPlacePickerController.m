@@ -178,7 +178,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  A "Done" button.
      */
     
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = button;
     
     /**
