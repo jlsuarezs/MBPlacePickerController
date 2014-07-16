@@ -174,7 +174,7 @@
   "continent" : "North America"
   },
   {
-  "name" : "Ciudad de Mexico, Mexico",
+  "name" : "Mexico City, Mexico",
   "longitude" : -99.1275711,
   "latitude" : 19.4270499,
   "continent" : "South America"
@@ -198,7 +198,7 @@
   "continent" : "North America"
   },
   {
-  "name" : "Montevideo, Uruguai",
+  "name" : "Montevideo, Uruguay",
   "longitude" : -56.181944,
   "latitude" : -34.883611,
   "continent" : "South America"
@@ -264,10 +264,10 @@
   "continent" : "Asia"
   },
   {
-  "name" : "Rio De Janeiro, Brasil",
+  "name" : "Rio De Janeiro, Brazil",
   "longitude" : -43.197077,
   "latitude" : -22.908300,
-  "South America" : "South America"
+  "continent" : "South America"
   },
   {
   "name" : "San Diego, California, USA",
@@ -288,7 +288,7 @@
   "continent" : "North America"
   },
   {
-  "name" : "Sao Paulo, Brasil",
+  "name" : "Sao Paulo, Brazil",
   "longitude" : -46.6388182,
   "latitude" : -23.5489433,
   "continent" : "South America"
