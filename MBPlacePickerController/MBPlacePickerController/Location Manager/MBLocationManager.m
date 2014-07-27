@@ -185,7 +185,7 @@
     }
     else
     {
-        NSLog(@"");
+        NSLog(@"(MBLocationManager) : Location manager changed authorization from one of the authorizd states to a not authorized state.");
     }
 }
 
