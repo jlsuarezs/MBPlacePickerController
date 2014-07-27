@@ -27,7 +27,7 @@ there and add them to your project.
 
 Configuring MBPlacPickerController:
 ---
-For iOS 8, you need to add one of the following keys to your application's Info.plist. (If you're using the iOS 7 compatible 1.0.6 release, you can reasonable skip this bit.)
+For iOS 8, you need to add one of the following keys to your application's Info.plist. (If you're using the iOS 7 compatible 1.0.6 release, you can reasonably skip this bit.)
 
 If you want MBPlacePicker to request "always authorized" permissions, add `NSLocationAlwaysUsageDescription` to your Info.plist. This is identical to the iOS 7 `kCLAuthorizationStatusAuthorized` behavior. 
 
