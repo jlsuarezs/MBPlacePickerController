@@ -242,6 +242,17 @@
 
 #pragma mark - Requst Authorization
 
+/**
+ *  This method requests authorization based on the presence of the correct Info.plist key.
+ *
+ *  NSLocationWhenInUseUsageDescription - Allows the app to monitor location when visible.
+ *
+ *  NSLocationAlwaysUsageDescription - Allows the app to monitor location when visible and 
+ *  when in the background. Also allows for all the other location goodies described in
+ *  CoreLocationManager.h.
+ *
+ */
+
 - (void)requestAuthorization
 {
     NSArray *keys = [[[NSBundle mainBundle] infoDictionary] allKeys];
