@@ -136,7 +136,7 @@
     }
     else
     {
-        [self.locationManager requestAlwaysAuthorization];
+        [self requestAuthorization];
     }
 }
 
@@ -185,7 +185,7 @@
     }
     else if([self authorizationNotDetermined] == YES)
     {
-        [self.locationManager requestWhenInUseAuthorization];
+        [self requestAuthorization];
     }
     else
     {
@@ -240,4 +240,23 @@
     return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted;
 }
 
+#pragma mark - Requst Authorization
+
+- (void)requestAuthorization
+{
+    NSArray *keys = [[[NSBundle mainBundle] infoDictionary] allKeys];
+    
+    if ([keys containsObject:@"NSLocationWhenInUseUsageDescription"])
+    {
+            [self.locationManager requestWhenInUseAuthorization];
+    }
+    else if ([keys containsObject:@"NSLocationAlwaysUsageDescription"])
+    {
+        [self.locationManager requestAlwaysAuthorization];
+    }
+    else
+    {
+        NSLog(@"<%@> : The application's Info.plist is missing both of the required keys. Add either 'NSLocationWhenInUseUsageDescription' or 'NSLocationAlwaysUsageDescription' as required by iOS 8.", [self.class description]);
+    }
+}
 @end
