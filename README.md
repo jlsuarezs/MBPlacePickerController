@@ -7,7 +7,7 @@ Screenshots
 ---
 ![Jerusalem](screenshots/1b.png)
 ![Tokyo](screenshots/2b.png)
-![Prompt](screenshots/3b.png)
+![Prompt](screenshots/3c.png)
 ![Automatic](screenshots/4b.png)
 
 Getting Started
@@ -16,13 +16,27 @@ You'll need to find the `MBPlacePickerController` subfolder in the repository an
 
 Dependencies
 ---
-`MBPlacePickerController` was built in Objective-C with the iOS 7 SDK, ARC, and Core Location. 
+`MBPlacePickerController` was built in Objective-C with the iOS 7 SDK, ARC, and Core Location. As of version 2.0.0, MBPlacePickerController requires the iOS 8 SDK. For iOS 7, use the 1.0.6 release.
 
 **Note:** There's also a copy of another library I'm working on, called `CRLCoreLib`, but that's a standalone and included for your use. Don't worry about that. I'm noting it here because that library may ship seperately in the future. 
 
 Relevant Files
 ---
-Whatever's in the `MBPickerController` folder. It's got a few folders in there, including `CRLCoreLib`, `Place Picker`, `Map View`, and `Resources`. Take all of the folders in there and add them to your project.
+Whatever's in the `MBPickerController` folder. It's got a few folders in there, including `CRLCoreLib`, `Place Picker`, `Map View`, and `Resources`. Take all of the folders in 
+there and add them to your project.
+
+Configuring MBPlacPickerController:
+---
+For iOS 8, you need to add one of the following keys to your application's Info.plist. (If you're using the iOS 7 compatible 1.0.6 release, you can reasonable skip this bit.)
+
+If you want MBPlacePicker to request "always authorized" permissions, add `NSLocationAlwaysUsageDescription` to your Info.plist. This is identical to the iOS 7 `kCLAuthorizationStatusAuthorized` behavior. 
+
+If you want `MBPlacePicker` to request "when-in-use" permissions, add the `NSLocationWhenInUseUsageDescription`key to your Info.plist.
+
+**Note:** If you want to show the app's name in your description, use ${PRODUCT_NAME}, as shown in the following example:
+
+> NSLocationWhenInUseUsageDescription | ${PRODUCT_NAME} needs your location to work correctly. 
+
 
 Showing a Picker
 ---
