@@ -218,8 +218,13 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     [super viewWillAppear:animated];
     
     /**
-     *  TODO: Re-size map if necessary.
+     *  Highlight the coordinate in the place picker if there was one.
      */
+    
+    if (self.location != nil)
+    {
+        [[self map] markCoordinate:[self location].coordinate];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
