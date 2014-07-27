@@ -109,6 +109,10 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         
         _location = location;
         
+        /**
+         *
+         */
+        _transient = YES;
     }
     
     return self;
@@ -179,6 +183,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      */
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+    
+    if (self.transient)
+    {
+        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+    }
+    
     self.navigationItem.rightBarButtonItem = button;
     
     /**
@@ -188,12 +198,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     UIBarButtonItem *autolocateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Automatic", @"A title for automatic location updates") style:UIBarButtonItemStyleBordered target:self action:@selector(enableAutomaticUpdates)];
     
     self.navigationItem.leftBarButtonItem = autolocateButton;
-    
-    /**
-     *  Set a title.
-     */
-    
-    self.title = NSLocalizedString(@"Place Picker", @"A title for the place picker.");
     
     /**
      *  Set a background color.
@@ -333,6 +337,11 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
             if ([self.delegate respondsToSelector:@selector(placePickerController:didChangeToPlace:)])
             {
                 [[self delegate] placePickerController:self didChangeToPlace:lastLocation];
+                
+                if(self.transient)
+                {
+                    [self dismiss];
+                }
             }
         }
     }];
@@ -768,7 +777,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     
     if (location)
     {
-        [self disableAutomaticUpdates];
         [self.map markCoordinate:location.coordinate];
         
         NSDictionary *newLocationData = @{@"latitude": @(location.coordinate.latitude), @"longitude" : @(location.coordinate.longitude)};

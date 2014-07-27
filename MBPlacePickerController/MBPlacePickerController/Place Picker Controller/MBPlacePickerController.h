@@ -50,6 +50,14 @@
 
 @property (nonatomic, strong) CLLocation *location;
 
+/**
+ *  Decides if the picker dismisses with a location change, or if it waits for the user to dismiss.
+ *
+ *  The default is YES.
+ */
+
+@property (nonatomic, assign) BOOL transient;
+
 #pragma mark - Presenting and Dismissing the Picker
 
 /** ---
