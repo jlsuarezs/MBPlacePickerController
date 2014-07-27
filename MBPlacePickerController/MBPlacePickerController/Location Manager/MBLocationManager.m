@@ -129,7 +129,15 @@
 - (void)updateLocationWithCompletionHandler:(MBLocationManagerUpdateCompletionBlock)completion
 {
     [self setCompletion:completion];
-    [[self locationManager] startUpdatingLocation];
+    
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+    {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    else if([self authorizedAlways] || [self authorizedWhenInUse])
+    {
+            [[self locationManager] startUpdatingLocation];
+    }
 }
 
 /**
@@ -153,6 +161,68 @@
         l = [self locations][0];
     }
     return l;
+}
+
+#pragma mark - Authorization
+
+/** ---
+ *  @name Authorization
+ *  ---
+ */
+
+/**
+ *  Called when the authorization status changes.
+ *
+ *  @param locationManager The location manager.
+ *  @param status The new authorization status.
+ */
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if ([CLLocationManager authorizationStatus] == (kCLAuthorizationStatusAuthorizedAlways | kCLAuthorizationStatusAuthorizedWhenInUse))
+    {
+        [self.locationManager startUpdatingLocation];
+    }
+    else
+    {
+        NSLog(@"");
+    }
+}
+
+/**
+ *  @return YES if authorized, else NO.
+ */
+
+- (BOOL)authorizedWhenInUse
+{
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse;
+}
+
+/**
+ *  @eturn YES if authorized, else NO.
+ */
+
+- (BOOL)authorizedAlways
+{
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways;
+}
+
+/**
+ *  @eturn YES if denied, else NO.
+ */
+
+- (BOOL)authorizationDenied
+{
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied;
+}
+
+/**
+ *   @eturn YES if restricted, else NO.
+ */
+
+- (BOOL)authorizationRestricted
+{
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted;
 }
 
 @end
