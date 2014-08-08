@@ -149,7 +149,6 @@
         self._markedLocationView = [[MBMarkerView alloc] init];
         self._markedLocationView.radius = self.markerDiameter;
         self._markedLocationView.borderWidth = 1.0f;
-        self._markedLocationView.animated = YES;
     }
     
     self._markedLocationView.color = self.markerColor;
@@ -168,7 +167,6 @@
         self._userMarkerView = [[MBMarkerView alloc] init];
         self._userMarkerView.radius = 8.0f;
         self._userMarkerView.borderWidth = 1.0f;
-        self._userMarkerView.animated = YES;
     }
     
     self._userMarkerView.color = self.tintColor;
