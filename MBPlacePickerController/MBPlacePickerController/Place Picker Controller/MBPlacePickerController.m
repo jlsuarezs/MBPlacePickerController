@@ -32,7 +32,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
  *
  */
 
-@interface MBPlacePickerController () <UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate>
+@interface MBPlacePickerController () <UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, UISearchBarDelegate>
 
 /**
  *  An array of location dictionaries.
@@ -62,6 +62,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
  *  A navigation controller to present inside of.
  */
 @property (nonatomic, strong) UINavigationController *navigationController;
+
+/**
+ *  A search bar.
+ */
+
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 
@@ -96,6 +102,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         _automaticUpdates = NO;
         _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
 
+        /**
+         *  Wire up a search bar
+         */
+        
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];    //  We'll resize in loadView
+        
         /**
          *  Load the cached location.
          */
@@ -219,6 +231,23 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     
+    /**
+     *  Prepare some localized strings for the search bar.
+     */
+    
+    NSString *searchPlaceholder = NSLocalizedString(@"Search", @"A placeholder for the search bar.");
+
+    
+    /**
+     *  Wire up the search bar.
+     */
+    
+    self.searchBar.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44.0f);
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    self.tableView.tableHeaderView = self.searchBar;
+    self.searchBar.delegate = self;
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.placeholder = searchPlaceholder;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -245,6 +274,11 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     {
         [self.map markCoordinate:self.location.coordinate];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.searchBar.text = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -407,40 +441,8 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    NSDictionary *location =  nil;
-    
-    /**
-     *  If the locations are sorted by continent, pull out the appropriate one.
-     */
-    
-    if (self.sortByContinent == YES)
-    {
-        //  Gets the name of the continent.
-        NSString *continent = [self _sortedContinentNames][indexPath.section];
-        
-        //  Gets all the locations in the continent
-        NSArray *locationsForContinent = [self locationsByContinent][continent];
-        
-        //  Gets a specific location from the continent.
-        NSInteger row = indexPath.row;
-        
-        if (row < locationsForContinent.count)
-        {
-            location = locationsForContinent[row];
-        }
-    }
-    
-    /**
-     *  ...else just try to find an unsorted location.
-     */
-    else
-    {
-        
-        if (self.unsortedLocationList.count > indexPath.row)
-        {
-            location = self.unsortedLocationList[indexPath.row];
-        }
-    }
+    //  Pull out the location
+    NSDictionary *location =  [self _locationForIndexPath:indexPath];
     
     cell.textLabel.text = location[@"name"];
     
@@ -480,7 +482,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         count = [self.locationsByContinent[continentKeyForSection] count];
     }
     else{
-        count = [self.unsortedLocationList count];
+        count = [[self _searchedUnsortedLocations] count];
     }
     
     return count;
@@ -543,27 +545,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Pull out a location from the list.
      */
     
-    NSDictionary *location = self.unsortedLocationList[indexPath.row];
-    
-    /**
-     *  If the locations are sorted by continent, 
-     *  pull out the appropriate one.
-     */
-    
-    if (self.sortByContinent)
-    {
-        //  Gets the name of the continent.
-        NSString *continent = [self _sortedContinentNames][indexPath.section];
-        
-        //  Gets all the locations in the continent
-        NSArray *locationsForContinent = [self locationsByContinent][continent];
-        
-        //  Gets a specific location from the continent.
-        NSInteger row = indexPath.row;
-        if (row < locationsForContinent.count) {
-            location = locationsForContinent[row];
-        }
-    }
+    NSDictionary *location = [self _locationForIndexPath:indexPath];
     
     /**
      *  Extract the location from the tapped location.
@@ -614,8 +596,44 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     }
     
     previousIndexPath = indexPath;
+}
+
+#pragma mark - Location Access
+
+- (NSDictionary *)_locationForIndexPath:(NSIndexPath *)indexPath
+{
+    
+    NSArray *locations = [self _searchedUnsortedLocations];
+    
+    /**
+     *  Now pull out the appropriate location.
+     */
+    
+    NSDictionary *location = nil;
+    
+    if (self.sortByContinent)
+    {
+        //  Gets the name of the continent.
+        NSString *continent = [self _sortedContinentNames][indexPath.section];
+        
+        //  Gets all the locations in the continent
+        NSArray *locationsForContinent = [self locationsByContinent][continent];
+        
+        //  Gets a specific location from the continent.
+        NSInteger row = indexPath.row;
+        
+        if (row < locationsForContinent.count)
+        {
+            location = locationsForContinent[row];
+        }
+    }
+    else
+    {
+        location = locations[indexPath.row];
+    }
     
     
+    return location;
 }
 
 #pragma mark - Location List
@@ -712,6 +730,53 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 }
 
 /**
+ *  Searches the location list and returns an array of 
+ *  locations matching eithe rname or the continent.
+ */
+
+- (NSArray *)_searchedUnsortedLocations
+{
+    //  Take the search term
+    __block NSString *searchTerm = self.searchBar.text;
+    
+    //  Take the unsorted list.
+    __block NSArray *locations = self.unsortedLocationList;
+    
+    if (searchTerm != nil && searchTerm.length > 0)
+    {
+        NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+
+            NSDictionary *location = evaluatedObject;
+            
+            NSString *name = location[@"name"];
+            NSString *continent = location[@"continent"];
+            
+            BOOL continentMatch = NO;
+            BOOL nameMatch = NO;
+            
+            if ([name rangeOfString:searchTerm options:NSCaseInsensitiveSearch].location != NSNotFound)
+            {
+                nameMatch = YES;
+            }
+            else if ([continent rangeOfString:searchTerm options:NSCaseInsensitiveSearch].location != NSNotFound)
+            {
+                continentMatch = YES;
+            }
+            
+            return (nameMatch || continentMatch);
+        }];
+        
+        locations = [locations filteredArrayUsingPredicate:searchPredicate];
+    }
+    else
+    {
+        //  There's no search term.
+    }
+    
+    return locations;
+}
+
+/**
  *  Converts an array of locations to a dictionary of locations sorted by continent.
  */
 
@@ -719,7 +784,13 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 {
     NSMutableDictionary *continents = [[NSMutableDictionary alloc] init];
     
-    for (NSDictionary *location in self.unsortedLocationList)
+    /**
+     *  First pull out original locations and apply search term.
+     */
+    
+    NSArray *originalLocations = [self _searchedUnsortedLocations];
+    
+    for (NSDictionary *location in originalLocations)
     {
         NSString *continent = location[@"continent"];
         
@@ -821,6 +892,37 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         NSDictionary *newLocationData = @{@"latitude": @(location.coordinate.latitude), @"longitude" : @(location.coordinate.longitude)};
         [[NSUserDefaults standardUserDefaults] setObject:newLocationData forKey:kLocationPersistenceKey];
     }
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    //  This causes the cell to regenerate a new cache of sorted-by-continent locations.
+    self.unsortedLocationList = self.unsortedLocationList;
+    
+    //  Reload the table view, of course.
+    [[self tableView] reloadData];
+}
+
+/**
+ *  Toggle the search controls
+ */
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
 }
 
 @end
