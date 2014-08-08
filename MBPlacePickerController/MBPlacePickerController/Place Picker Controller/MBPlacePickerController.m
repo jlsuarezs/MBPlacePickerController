@@ -155,6 +155,13 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:self.tableView];
+    
+    /**
+     *  Make the title match the tint color.
+     */
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [[UIView appearance] tintColor]};
+    self.navigationController.navigationBar.titleTextAttributes = attributes;
 }
 
 #pragma mark - View Lifecycle
@@ -298,6 +305,21 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 - (void)enableAutomaticUpdates
 {
+    /**
+     *
+     */
+    
+    if ([[MBLocationManager sharedManager] authorizationDenied])
+    {
+        NSString *message = NSLocalizedString(@"Please allow location access in Settings.", @"A message for an error alert.");
+        self.navigationItem.prompt = message;
+    }
+    else if([[MBLocationManager sharedManager] authorizationRestricted])
+    {
+        NSString *message = NSLocalizedString(@"Restricted enabled, disable them in Settings.", @"A message for an error alert.");
+        self.navigationItem.prompt = message;
+    }
+    
     /**
      *  Don't enable twice in a row.
      */
