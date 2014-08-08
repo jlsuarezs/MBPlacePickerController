@@ -183,13 +183,17 @@
     {
         [self.locationManager startUpdatingLocation];
     }
-    else if([self authorizationNotDetermined] == YES)
+    else if([self authorizationNotDetermined])
     {
         [self requestAuthorization];
     }
-    else
+    else if ([self authorizationRestricted])
     {
-        NSLog(@"(MBLocationManager) : Location manager changed authorization from one of the authorizd states to a not authorized state. (State: %li)", (long)[CLLocationManager authorizationStatus]);
+        NSLog(@"(MBLocationManager) : Location manager changed authorization state to 'restricted.' (State: %li)", (long)[CLLocationManager authorizationStatus]);
+    }
+    else if([self authorizationDenied])
+    {
+        NSLog(@"(MBLocationManager) : Location manager changed authorization state to 'denied.' (State: %li)", (long)[CLLocationManager authorizationStatus]);
     }
     
     self.status = status;
