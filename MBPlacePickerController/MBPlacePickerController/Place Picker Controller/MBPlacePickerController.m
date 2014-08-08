@@ -17,12 +17,6 @@
 @import MapKit;
 
 /**
- *
- */
-
-static NSIndexPath *previousIndexPath = nil;
-
-/**
  *  A key used to persist the last location.
  */
 
@@ -69,6 +63,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 
+/**
+ *  Track the previous indexPath to properly deselect it.
+ */
+
+@property (nonatomic, strong) NSIndexPath *previousIndexPath;
+
 @end
 
 @implementation MBPlacePickerController
@@ -101,6 +101,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         _serverURL = @"";
         _automaticUpdates = NO;
         _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+        _previousIndexPath = nil;
 
         /**
          *  Wire up a search bar
@@ -267,7 +268,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    previousIndexPath = nil;
+    self.previousIndexPath = nil;
     [self refreshLocationsFromServer];
     
     if(!self.automaticUpdates)
@@ -279,6 +280,8 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 - (void)viewDidDisappear:(BOOL)animated
 {
     self.searchBar.text = nil;
+    self.unsortedLocationList = self.unsortedLocationList;
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -586,16 +589,16 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Update the list.
      */
     
-    if (previousIndexPath && ! [indexPath isEqual:previousIndexPath])
+    if (self.previousIndexPath && ! [indexPath isEqual:self.previousIndexPath])
     {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath, previousIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath, self.previousIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else
     {
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     
-    previousIndexPath = indexPath;
+    self.previousIndexPath = indexPath;
 }
 
 #pragma mark - Location Access
@@ -923,6 +926,11 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 {
     [searchBar setShowsCancelButton:NO animated:YES];
     return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
 }
 
 @end
