@@ -52,11 +52,18 @@
 
 /**
  *  Decides if the picker dismisses with a location change, or if it waits for the user to dismiss.
+ *  If transient, the search state will clear on dismissal.
  *
  *  The default is YES.
  */
 
 @property (nonatomic, assign) BOOL transient;
+
+/**
+ *  Toggles the search bar.
+ */
+
+@property (nonatomic, assign) BOOL showSearch;
 
 #pragma mark - Presenting and Dismissing the Picker
 

@@ -245,10 +245,18 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     
     self.searchBar.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44.0f);
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.tableHeaderView = self.searchBar;
     self.searchBar.delegate = self;
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.placeholder = searchPlaceholder;
+    
+    /**
+     *  If search is enabled, add the search bar to the view hierarchy.
+     */
+    
+    if (self.showSearch)
+    {
+        self.tableView.tableHeaderView = self.searchBar;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -279,9 +287,9 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    self.searchBar.text = nil;
-    self.unsortedLocationList = self.unsortedLocationList;
-    [self.tableView reloadData];
+    if (self.transient) {
+        [self _clearSearchState];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -897,12 +905,34 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     }
 }
 
+/**
+ *  Toggles the search bar.
+ */
+
+- (void)setShowSearch:(BOOL)showSearch
+{
+    _showSearch = showSearch;
+    
+    if (_showSearch)
+    {
+        self.tableView.tableHeaderView = self.searchBar;
+    }
+    else
+    {
+        self.tableView.tableHeaderView = nil;
+    }
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
 }
+
+/**
+ *  Execute a search when the search term changes.
+ */
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
@@ -914,7 +944,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 }
 
 /**
- *  Toggle the search controls
+ *  Toggle the search controls when the search appears.
  */
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
@@ -922,15 +952,44 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     return YES;
 }
 
+/**
+ *  Toggle the search controls when the search ends.
+ */
+
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
     return YES;
 }
 
+/**
+ *  When the user taps "search" on the keyboard.
+ */
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
+}
+
+#pragma mark - Clear Search State
+
+/** ---
+ *  @name Clear Search State
+ *  ---
+ */
+
+
+/**
+ *  This method empties the search bar, 
+ *  resets the data source, and causes
+ *  the table to reload.
+ */
+
+- (void)_clearSearchState
+{
+    self.searchBar.text = nil;
+    self.unsortedLocationList = self.unsortedLocationList;
+    [self.tableView reloadData];
 }
 
 @end
