@@ -89,25 +89,44 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     return manager;
 }
 
+#pragma mark - Designated initializer
+
+/**
+ *  Designated initializer
+ */
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _unsortedLocationList = @[];
-        _locationsByContinent = @{};
-        _map = [[MBMapView alloc] init];
-        _sortByContinent = YES;
-        _serverURL = @"";
-        _automaticUpdates = NO;
-        _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-        _previousIndexPath = nil;
-
+        
         /**
-         *  Wire up a search bar
+         *  UI
          */
         
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _map = [[MBMapView alloc] init];
+        _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
         _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];    //  We'll resize in loadView
+        
+        /**
+         *  Model and data.
+         */
+        
+        _unsortedLocationList = @[];
+        _locationsByContinent = @{};
+        _previousIndexPath = nil;
+
+        _serverURL = @"";
+        
+        /**
+         *  Flags
+         */
+        
+        _sortByContinent = YES;
+        _automaticUpdates = NO;
+        _showSearch = YES;
+        _transient = YES;
         
         /**
          *  Load the cached location.
@@ -121,12 +140,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
         
         _location = location;
-        
-        /**
-         *  A transience property, defaulted to YES.
-         */
-        
-        _transient = YES;
+    
     }
     
     return self;
