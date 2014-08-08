@@ -5,10 +5,12 @@ A view controller for picking a location. I wrote it to be a simple wrapper arou
 
 Screenshots
 ---
-![Jerusalem](screenshots/1b.png)
-![Tokyo](screenshots/2b.png)
-![Prompt](screenshots/3c.png)
-![Automatic](screenshots/4b.png)
+There are more screenshots in the [screenshots folder](/screenshots).
+
+![Jerusalem](screenshots/2.2.0/Readme/Default-Dark.png)
+![Permissions 7](screenshots/2.2.0/Readme/Permissions7.png)
+![Prompt](screenshots/2.2.0/Readme/Permissions8.png)
+![Automatic](screenshots/2.2.0/Readme/Search.png)
 
 Getting Started
 ---
