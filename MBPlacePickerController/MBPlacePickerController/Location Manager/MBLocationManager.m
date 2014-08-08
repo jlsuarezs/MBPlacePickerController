@@ -179,13 +179,20 @@
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if ([self authorizedAlways] || [self authorizedWhenInUse])
+    if ([self authorizedAlways])
     {
         [self.locationManager startUpdatingLocation];
+        NSLog(@"(MBLocationManager) : Location manager changed authorization state to 'always.' (State: %li)", (long)[CLLocationManager authorizationStatus]);
+    }
+    else if([self authorizedWhenInUse])
+    {
+        [self.locationManager startUpdatingLocation];
+        NSLog(@"(MBLocationManager) : Location manager changed authorization state to 'when in use.' (State: %li)", (long)[CLLocationManager authorizationStatus]);
     }
     else if([self authorizationNotDetermined])
     {
         [self requestAuthorization];
+        NSLog(@"(MBLocationManager) : Location manager changed authorization state to 'not determined.' (State: %li)", (long)[CLLocationManager authorizationStatus]);        
     }
     else if ([self authorizationRestricted])
     {
