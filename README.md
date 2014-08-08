@@ -14,13 +14,13 @@ There are more screenshots in the [screenshots folder](/screenshots).
 
 Getting Started
 ---
-You'll need to find the `MBPlacePickerController` subfolder in the repository and add it to your project. CocoaPods support is not available *yet*.
+You'll need to find the `MBPlacePickerController` subfolder in the repository and add it to your project. CocoaPods support is experimental, with the following line: 
+
+	pod 'MBPlacePickerController', '~>2.2.0'
 
 Dependencies
 ---
-`MBPlacePickerController` was built in Objective-C with the iOS 7 SDK, ARC, and Core Location. As of version 2.0.0, MBPlacePickerController requires the iOS 8 SDK. For iOS 7, use the 1.0.6 release.
-
-**Note:** There's also a copy of another library I'm working on, called `CRLCoreLib`, but that's a standalone and included for your use. Don't worry about that. I'm noting it here because that library may ship seperately in the future. 
+`MBPlacePickerController` was built in Objective-C with the iOS 7 SDK, ARC, and Core Location. As of version 2.2.0, MBPlacePickerController requires the iOS 8 SDK, but will work with iOS 7. (The 2.0.0 release was not comptible with iOS 7. Earlier and later releases are.)
 
 Relevant Files
 ---
@@ -143,6 +143,10 @@ Showing or Hiding User Location:
 The map view has a toggle for displaying user location (even if the location is manual.) The user's location is indicated by a purple circle.
 
 	picker.map.showUserLocation = YES;	// Enables user location.
+
+Search
+---
+Search is included for free in 2.2.0. You can turn it on and off by setting the `showSearch` property of the `MBPlacePickerController`. The default value is `YES`.
 
 License
 ---
