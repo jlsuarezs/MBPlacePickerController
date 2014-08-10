@@ -230,7 +230,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *   A button for automatic location updates.
      */
     
-    UIBarButtonItem *autolocateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Automatic", @"A title for automatic location updates") style:UIBarButtonItemStyleBordered target:self action:@selector(enableAutomaticUpdates)];
+    UIBarButtonItem *autolocateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Automatic", @"A title for automatic location updates") style:UIBarButtonItemStylePlain target:self action:@selector(enableAutomaticUpdates)];
     
     self.navigationItem.leftBarButtonItem = autolocateButton;
     
