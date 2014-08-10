@@ -27,9 +27,9 @@ Relevant Files
 Whatever's in the `MBPickerController` folder. It's got a few folders in there, including `CRLCoreLib`, `Place Picker`, `Map View`, and `Resources`. Take all of the folders in 
 there and add them to your project.
 
-Configuring MBPlacPickerController:
+Configuring MBPlacePickerController:
 ---
-For iOS 8, you need to add one of the following keys to your application's Info.plist. (If you're using the iOS 7 compatible 1.0.6 release, you can reasonably skip this bit.)
+For iOS 8, you need to add one of the following keys to your application's Info.plist.
 
 If you want MBPlacePicker to request "always authorized" permissions, add `NSLocationAlwaysUsageDescription` to your Info.plist. This is identical to the iOS 7 `kCLAuthorizationStatusAuthorized` behavior. 
 
