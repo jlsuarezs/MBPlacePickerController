@@ -16,13 +16,6 @@
 
 @property (nonatomic, strong) UIView *pulsingView;
 
-/**
- *  The maximum diameter of the pulsing ring.
- */
-
-@property (nonatomic, assign) CGFloat maxPulsingSize;
-
-
 @end
 
 @implementation MBMarkerView
