@@ -13,6 +13,8 @@
 #import "CRLCoreLib.h"
 #import "MBLocationManager.h"
 
+#import "MBPlacePickerCell.h"
+
 @import CoreLocation;
 @import MapKit;
 
@@ -100,50 +102,67 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self = [super init];
     if (self) {
         
-        /**
-         *  UI
-         */
-        
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _map = [[MBMapView alloc] init];
-        _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];    //  We'll resize in loadView
-        
-        /**
-         *  Model and data.
-         */
-        
-        _unsortedLocationList = @[];
-        _locationsByContinent = @{};
-        _previousIndexPath = nil;
-
-        _serverURL = @"";
-        
-        /**
-         *  Flags
-         */
-        
-        _sortByContinent = YES;
-        _automaticUpdates = NO;
-        _showSearch = YES;
-        _transient = YES;
-        
-        /**
-         *  Load the cached location.
-         */
-        
-        NSDictionary *previousLocationData = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kLocationPersistenceKey];
-        
-        CGFloat lat = [previousLocationData[@"latitude"] floatValue];
-        CGFloat lon = [previousLocationData[@"longitude"] floatValue];
-        
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
-        
-        _location = location;
-    
+        [self prepare];
     }
     
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [[UITextField appearance] setTextColor:[UIColor whiteColor]];
+    [self prepare];
+}
+
+- (void)prepare
+{
+    /**
+     *  UI
+     */
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _map = [[MBMapView alloc] init];
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];    //  We'll resize in loadView
+    
+    /**
+     *  Model and data.
+     */
+    
+    _unsortedLocationList = @[];
+    _locationsByContinent = @{};
+    _previousIndexPath = nil;
+    
+    _serverURL = @"";
+    
+    /**
+     *  Flags
+     */
+    
+    _sortByContinent = YES;
+    _automaticUpdates = NO;
+    _showSearch = YES;
+    _transient = YES;
+    
+    /**
+     *  Load the cached location.
+     */
+    
+    NSDictionary *previousLocationData = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kLocationPersistenceKey];
+    
+    CGFloat lat = [previousLocationData[@"latitude"] floatValue];
+    CGFloat lon = [previousLocationData[@"longitude"] floatValue];
+    
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    
+    _location = location;
+    
+    /**
+     *
+     */
+    
+    self.view.tintColor = [UIColor whiteColor];
+
 }
 
 - (void)loadView
@@ -198,6 +217,11 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.navigationController.navigationBar.titleTextAttributes = attributes;
 }
 
+- (void)prepareForInterfaceBuilder
+{
+    [self prepare];
+}
+
 #pragma mark - View Lifecycle
 
 /** ---
@@ -221,25 +245,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     [self loadLocationsFromDisk];
     
     /**
-     *  A "Done" button.
-     */
-    
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
-    
-    if (self.transient)
-    {
-        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
-    }
-    
-    self.navigationItem.rightBarButtonItem = button;
-    
-    /**
      *   A button for automatic location updates.
      */
     
     UIBarButtonItem *autolocateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Automatic", @"A title for automatic location updates") style:UIBarButtonItemStylePlain target:self action:@selector(enableAutomaticUpdates)];
     
-    self.navigationItem.leftBarButtonItem = autolocateButton;
+    self.navigationItem.rightBarButtonItem = autolocateButton;
     
     /**
      *  Set a background color.
@@ -251,7 +262,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Register a table view cell class.
      */
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+    [self.tableView registerClass:[MBPlacePickerCell class] forCellReuseIdentifier:@"com.mosheberman.location-cell"];
     
     /**
      *  Prepare some localized strings for the search bar.
@@ -300,10 +311,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.previousIndexPath = nil;
     [self refreshLocationsFromServer];
     
-    if(!self.automaticUpdates)
-    {
-        [self.map markCoordinate:self.location.coordinate];
-    }
+    [self.map markCoordinate:self.location.coordinate];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -387,15 +395,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     }
     
     /**
-     *  Don't enable twice in a row.
-     */
-    
-    if (self.automaticUpdates)
-    {
-        return;
-    }
-    
-    /**
      *  Set the flag.
      */
     
@@ -471,7 +470,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
  */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"com.mosheberman.location-cell" forIndexPath:indexPath];
     
     //  Pull out the location
     NSDictionary *location =  [self _locationForIndexPath:indexPath];
@@ -628,6 +627,19 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     }
     
     self.previousIndexPath = indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.textLabel.textColor = [UIColor whiteColor];
+    
+    header.contentView.backgroundColor = [self.tableView backgroundColor];
 }
 
 #pragma mark - Location Access

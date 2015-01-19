@@ -195,24 +195,20 @@
     
     if (![self.subviews containsObject:[self marker]])
     {
-        marker.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0, 0);
-        
-        [marker setCenter:center];
+        marker.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.01, 0.01);
         [self addSubview:marker];
-        marker.transform = CGAffineTransformIdentity;
         
     }
-    else
-    {
+
         [UIView animateWithDuration:0.20
                          animations:^{
                              [marker setCenter:center];
+                             marker.transform = CGAffineTransformIdentity;
                          }
                          completion:^(BOOL finished) {
                              
                          }];
-    }
-    
+
     
     
     

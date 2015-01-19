@@ -132,6 +132,7 @@
     
     if([self authorizedAlways] || [self authorizedWhenInUse] || ([self isOlderSystem] && ![self authorizationDenied]))
     {
+        [[self locationManager] stopUpdatingLocation];
         [[self locationManager] startUpdatingLocation];
     }
     else
