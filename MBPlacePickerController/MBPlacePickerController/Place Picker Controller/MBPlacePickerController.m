@@ -260,7 +260,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.searchBar.delegate = self;
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.placeholder = searchPlaceholder;
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
     /**
      *  If search is enabled, add the search bar to the view hierarchy.
@@ -270,8 +269,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     {
         self.tableView.tableHeaderView = self.searchBar;
     }
-    
-    [[UITextField appearance] setTextColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
