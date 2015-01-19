@@ -110,7 +110,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 - (void)awakeFromNib
 {
-    [[UITextField appearance] setTextColor:[UIColor whiteColor]];
     [self prepare];
 }
 
@@ -201,25 +200,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:self.tableView];
-    
-    /**
-     *  Make the title match the tint color.
-     */
-    
-    UIColor *color = [[UIView appearance] tintColor];
-    
-    if (!color)
-    {
-        color = [self.view tintColor];
-    }
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName : color};
-    self.navigationController.navigationBar.titleTextAttributes = attributes;
-}
-
-- (void)prepareForInterfaceBuilder
-{
-    [self prepare];
 }
 
 #pragma mark - View Lifecycle
@@ -280,6 +260,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     self.searchBar.delegate = self;
     self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.searchBar.placeholder = searchPlaceholder;
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
     
     /**
      *  If search is enabled, add the search bar to the view hierarchy.
@@ -289,6 +270,8 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     {
         self.tableView.tableHeaderView = self.searchBar;
     }
+    
+    [[UITextField appearance] setTextColor:[UIColor whiteColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
