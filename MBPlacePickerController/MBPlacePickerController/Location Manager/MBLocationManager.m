@@ -133,7 +133,9 @@
     if([self authorizedAlways] || [self authorizedWhenInUse] || ([self isOlderSystem] && ![self authorizationDenied]))
     {
         [[self locationManager] stopUpdatingLocation];
+        [[self locationManager] stopMonitoringSignificantLocationChanges];        
         [[self locationManager] startUpdatingLocation];
+        [[self locationManager] startMonitoringSignificantLocationChanges];
     }
     else
     {
@@ -148,6 +150,7 @@
 - (void)stopUpdatingLocation
 {
     [[self locationManager] stopUpdatingLocation];
+    [[self locationManager] stopMonitoringSignificantLocationChanges];
 }
 
 /**
