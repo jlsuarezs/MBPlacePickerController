@@ -95,12 +95,22 @@
  *  @name Core Location Manager Delegate
  *  ----
  */
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+    BOOL significantChange = NO;
+    
+    if (![self.location isEqual:[locations firstObject]])
+    {
+        significantChange = YES;
+    }
+    
     [self setLocations:locations];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"com.mosheberman.location-did-change" object:locations];
-    
+    if(significantChange)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.mosheberman.location-did-change" object:locations];
+    }
     if (self.completion) {
         self.completion(self.locations, self.heading, self.status);
     }
