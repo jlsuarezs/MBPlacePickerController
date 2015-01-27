@@ -161,7 +161,15 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      */
     
     self.view.tintColor = [UIColor whiteColor];
+    
+    /**
+     *  Listen for location updates.
+     */
 
+    if (_automaticUpdates == YES)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLocationFromNotification:) name:@"com.mosheberman.location-did-change" object:nil];
+    }
 }
 
 - (void)loadView
@@ -919,6 +927,15 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 }
 
 /**
+ *
+ */
+
+- (void)setLocationFromNotification:(NSNotification *)notification
+{
+    [self setLocation:notification.object];
+}
+
+/**
  *  Toggles the search bar.
  */
 
@@ -933,6 +950,23 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     else
     {
         self.tableView.tableHeaderView = nil;
+    }
+}
+
+/**
+ *
+ */
+
+- (void)setAutomaticUpdates:(BOOL)automaticUpdates
+{
+    _automaticUpdates = automaticUpdates;
+    
+    if (automaticUpdates) {
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setLocationFromNotification:) name:@"com.mosheberman.location-did-change" object:nil];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"com.mosheberman.location-did-change" object:nil];
     }
 }
 

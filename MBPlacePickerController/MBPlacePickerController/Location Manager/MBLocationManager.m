@@ -109,7 +109,7 @@
     
     if(significantChange)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.mosheberman.location-did-change" object:locations];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.mosheberman.location-did-change" object:self.location];
     }
     if (self.completion) {
         self.completion(self.locations, self.heading, self.status);
