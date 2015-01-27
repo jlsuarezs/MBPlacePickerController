@@ -23,6 +23,7 @@
 		468E10161958656A00BA2C56 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468E0FF51958656A00BA2C56 /* UIKit.framework */; };
 		468E101E1958656A00BA2C56 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 468E101C1958656A00BA2C56 /* InfoPlist.strings */; };
 		468E10201958656A00BA2C56 /* MBPlacePickerControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 468E101F1958656A00BA2C56 /* MBPlacePickerControllerTests.m */; };
+		46C33D001A7826ED001FDD64 /* MBPlacePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46C33CFF1A7826ED001FDD64 /* MBPlacePickerCell.m */; };
 		46D7058D1968EF4B008113A8 /* MBLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D705821968EF4B008113A8 /* MBLocationManager.m */; };
 		46D7058E1968EF4B008113A8 /* MBPlacePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D705851968EF4B008113A8 /* MBPlacePickerController.m */; };
 		46D705901968EF4B008113A8 /* equi-map.png in Resources */ = {isa = PBXBuildFile; fileRef = 46D7058A1968EF4B008113A8 /* equi-map.png */; };
@@ -70,6 +71,8 @@
 		468E101B1958656A00BA2C56 /* MBPlacePickerControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MBPlacePickerControllerTests-Info.plist"; sourceTree = "<group>"; };
 		468E101D1958656A00BA2C56 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		468E101F1958656A00BA2C56 /* MBPlacePickerControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MBPlacePickerControllerTests.m; sourceTree = "<group>"; };
+		46C33CFE1A7826ED001FDD64 /* MBPlacePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBPlacePickerCell.h; sourceTree = "<group>"; };
+		46C33CFF1A7826ED001FDD64 /* MBPlacePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBPlacePickerCell.m; sourceTree = "<group>"; };
 		46D705811968EF4B008113A8 /* MBLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLocationManager.h; sourceTree = "<group>"; };
 		46D705821968EF4B008113A8 /* MBLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBLocationManager.m; sourceTree = "<group>"; };
 		46D705841968EF4B008113A8 /* MBPlacePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBPlacePickerController.h; sourceTree = "<group>"; };
@@ -203,10 +206,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		46C33CFD1A7826ED001FDD64 /* Custom Cell */ = {
+			isa = PBXGroup;
+			children = (
+				46C33CFE1A7826ED001FDD64 /* MBPlacePickerCell.h */,
+				46C33CFF1A7826ED001FDD64 /* MBPlacePickerCell.m */,
+			);
+			path = "Custom Cell";
+			sourceTree = "<group>";
+		};
 		46D7057F1968EF4B008113A8 /* MBPlacePickerController */ = {
 			isa = PBXGroup;
 			children = (
 				46D705931968F3FD008113A8 /* MBPlacePickerDelegate.h */,
+				46C33CFD1A7826ED001FDD64 /* Custom Cell */,
 				462C280E1995582500F46FC2 /* Map Marker */,
 				46D705981969030B008113A8 /* CRLCoreLib */,
 				46D705801968EF4B008113A8 /* Location Manager */,
@@ -397,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46C33D001A7826ED001FDD64 /* MBPlacePickerCell.m in Sources */,
 				468E100B1958656A00BA2C56 /* MBViewController.m in Sources */,
 				46D705A61969030B008113A8 /* CRLDataManager.m in Sources */,
 				46D7058D1968EF4B008113A8 /* MBLocationManager.m in Sources */,
