@@ -99,6 +99,8 @@
 {
     [self setLocations:locations];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"com.mosheberman.location-did-change" object:locations];
+    
     if (self.completion) {
         self.completion(self.locations, self.heading, self.status);
     }
