@@ -187,7 +187,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Make the title match the tint color.
      */
     
-    NSDictionary *attributes = @{NSForegroundColorAttributeName : [[UIView appearance] tintColor]};
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [[[UIApplication sharedApplication] keyWindow] tintColor]};
     self.navigationController.navigationBar.titleTextAttributes = attributes;
 }
 
