@@ -198,9 +198,15 @@
   "continent" : "North America"
   },
   {
+  "name" : "Modi'in, Israel",
+  "longitude" : 35.005408,
+  "latitude" : 31.900831,
+  "continent" : "Asia"
+  },
+  {
   "name" : "Montevideo, Uruguay",
-  "longitude" : -56.181944,
-  "latitude" : -34.883611,
+  "longitude" : -56.168679,
+  "latitude" : -34.863467,
   "continent" : "South America"
   },
   {
@@ -258,15 +264,27 @@
   "continent" : "North America"
   },
   {
+  "name" : "Punta del Este, Uruguay",
+  "longitude" : -54.941786,
+  "latitude" : -34.961262,
+  "continent" : "South America"
+  },
+  {
+  "name" : "Ra'anana, Israel",
+  "longitude" : 34.868541,
+  "latitude" : 32.181974,
+  "continent" : "Asia"
+  },
+  {
   "name" : "Ramat Beit Shemesh, Israel",
   "longitude" : 34.986649,
   "latitude" : 31.745686,
   "continent" : "Asia"
   },
   {
-  "name" : "Rio De Janeiro, Brazil",
-  "longitude" : -43.197077,
-  "latitude" : -22.908300,
+  "name" : "Rio de Janeiro, Brazil",
+  "longitude" : -43.188245,
+  "latitude" : -22.972385,
   "continent" : "South America"
   },
   {
@@ -288,7 +306,7 @@
   "continent" : "North America"
   },
   {
-  "name" : "Sao Paulo, Brazil",
+  "name" : "São Paulo, Brazil",
   "longitude" : -46.6388182,
   "latitude" : -23.5489433,
   "continent" : "South America"
