@@ -187,14 +187,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
      *  Make the title match the tint color.
      */
     
-    UIColor *color = [[UIView appearance] tintColor];
-    
-    if (!color)
-    {
-        color = [self.view tintColor];
-    }
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName : color};
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [[[UIApplication sharedApplication] keyWindow] tintColor]};
     self.navigationController.navigationBar.titleTextAttributes = attributes;
 }
 
@@ -351,9 +344,16 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 - (void)dismiss
 {
-    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        self.navigationItem.prompt = nil;
-    }];
+    if([self.delegate respondsToSelector:@selector(placePickerControllerDidFinish:)])
+    {
+        [self.delegate placePickerControllerDidFinish:self];
+    }
+    else
+    {
+        [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
+            self.navigationItem.prompt = nil;
+        }];
+    }
 }
 
 #pragma mark - Automatic Location Updates
@@ -372,7 +372,16 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 - (void)enableAutomaticUpdates
 {
     /**
-     *
+     *  Call the delegate method.
+     */
+    
+    if ([self.delegate respondsToSelector:@selector(placePickerControllerDidTapAutomaticButton:)])
+    {
+        [self.delegate placePickerControllerDidTapAutomaticButton:self];
+    }
+    
+    /**
+     *  Check authorization.
      */
     
     if ([[MBLocationManager sharedManager] authorizationDenied])
