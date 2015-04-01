@@ -21,4 +21,18 @@
 
 - (void)placePickerController:(MBPlacePickerController *)placePicker didChangeToPlace:(CLLocation *)place;
 
+@optional
+
+/**
+ *  Called when the tapped the done button.
+ */
+
+- (void)placePickerControllerDidFinish:(MBPlacePickerController *)placePicker;
+
+/**
+ *  Called when the tapped the automatic button.
+ */
+
+- (void)placePickerControllerDidTapAutomaticButton:(MBPlacePickerController *)placePicker;
+
 @end
