@@ -16,7 +16,7 @@ Getting Started
 ---
 You'll need to find the `MBPlacePickerController` subfolder in the repository and add it to your project. CocoaPods support is experimental, with the following line: 
 
-	pod 'MBPlacePickerController', '~>2.2.6'
+	pod 'MBPlacePickerController', '~>2.2.9'
 
 Dependencies
 ---
