@@ -106,7 +106,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _map = [[MBMapView alloc] init];
-        _navigationController = [[UINavigationController alloc] initWithRootViewController:self];
         _searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];    //  We'll resize in loadView
         
         /**
@@ -214,25 +213,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     [self loadLocationsFromDisk];
     
     /**
-     *  A "Done" button.
-     */
-    
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
-    
-    if (self.transient)
-    {
-        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
-    }
-    
-    self.navigationItem.rightBarButtonItem = button;
-    
-    /**
-     *   A button for automatic location updates.
+     *   Add a  button for automatic location updates.
      */
     
     UIBarButtonItem *autolocateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Automatic", @"A title for automatic location updates") style:UIBarButtonItemStylePlain target:self action:@selector(enableAutomaticUpdates)];
     
-    self.navigationItem.leftBarButtonItem = autolocateButton;
+    self.navigationItem.rightBarButtonItem = autolocateButton;
     
     /**
      *  Set a background color.
@@ -252,7 +238,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     
     NSString *searchPlaceholder = NSLocalizedString(@"Search", @"A placeholder for the search bar.");
 
-    
     /**
      *  Wire up the search bar.
      */
@@ -320,22 +305,86 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
  */
 
 /**
- *  Asks the rootViewController of the keyWindow to display self.
+ * Calls displayInViewController: passing the root view controller of the application's keyWindow.
  */
 
 - (void)display
 {
+    UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+
+    [self displayInViewController:viewController];
+}
+
+/**
+ *  Displays the place picker in the appropriate view controller.
+ *
+ *  @discussion If the viewController is a navigationController, we'll push onto the stack.
+ *  Otherwise, the place picker will wrap itself in a UINavigationController and present itself modally.
+ *
+ *  @param viewController A view controller to display in.
+ *
+ */
+
+- (void)displayInViewController:(UIViewController *)viewController
+{
     
     /**
-     *
+     *  First, nil out the navigation controller, in case.
      */
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    self.navigationController = nil;
+    
+
+    /**
+     *  If the target view controller is a navigation controller, push the VC onto the stack.
+     */
+    
+    if ([viewController isKindOfClass:[UINavigationController class]])
     {
-        [self.navigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+        UINavigationController *vc = (UINavigationController *)viewController;
+        [vc pushViewController:self animated:YES];
     }
     
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:self.navigationController animated:YES completion:nil];
+    /**
+     *  ...else, present the parent navigation controller controller.
+     */
+    
+    else
+    {
+        /**
+         *  Wrap in our own navigation controller...
+         */
+        
+        self.navigationController = [[UINavigationController alloc] initWithRootViewController:self];
+        
+        /**
+         *  Add a "Done" button.
+         */
+        
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+        
+        if (self.transient)
+        {
+            button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+        }
+        
+        self.navigationItem.leftBarButtonItem = button;
+         
+        /**
+         *  On iPad, change the modal presentation style.
+         */
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            [self.navigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+        }
+        
+        /**
+         *  Present the navigation controller.
+         */
+        
+        [viewController presentViewController:self.navigationController animated:YES completion:nil];
+    }
 }
 
 /**
@@ -344,15 +393,31 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 - (void)dismiss
 {
+    /**
+     *  If the navigation controller is presented, dismiss the navigation controller.
+     */
+    
+    if(self.navigationController.presentingViewController)
+    {
+        [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    /**
+     *  Otherwise, pop to the next view controller on the stack.
+     */
+    
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+    /**
+     *  Tell the delegate that the location picker is finished.
+     */
+    
     if([self.delegate respondsToSelector:@selector(placePickerControllerDidFinish:)])
     {
         [self.delegate placePickerControllerDidFinish:self];
-    }
-    else
-    {
-        [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-            self.navigationItem.prompt = nil;
-        }];
     }
 }
 

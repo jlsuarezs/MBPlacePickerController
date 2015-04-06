@@ -73,10 +73,22 @@
  */
 
 /**
- *  Asks the rootViewController of the keyWindow to display the location view controller.
+ * Calls displayInViewController: passing the root view controller of the application's keyWindow.
  */
 
 - (void)display;
+
+/**
+ *  Displays the place picker in the appropriate view controller.
+ *
+ *  @discussion If the viewController is a navigationController, we'll push onto the stack.
+ *  Otherwise, the place picker will wrap itself in a UINavigationController and present itself modally.
+ *
+ *  @param viewController A view controller to display in.
+ *
+ */
+
+- (void)displayInViewController:(UIViewController *)viewController;
 
 /**
  *  Asks the rootViewController of the keyWindow to dismiss whatever it's showing.
