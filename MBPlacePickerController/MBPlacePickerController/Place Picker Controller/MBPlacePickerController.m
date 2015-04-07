@@ -144,7 +144,8 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         
         if (![extensionFriendlyDefaults dictionaryForKey:kLocationPersistenceKey] && previouslySavedDictionary)
         {
-            [[NSUserDefaults standardUserDefaults] setObject:previouslySavedDictionary forKey:kLocationPersistenceKey];
+            [extensionFriendlyDefaults setObject:previouslySavedDictionary forKey:kLocationPersistenceKey];
+            [extensionFriendlyDefaults synchronize];
         }
         
         NSDictionary *previousLocationData = [extensionFriendlyDefaults dictionaryForKey:kLocationPersistenceKey];
@@ -1017,7 +1018,9 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         [self.map markCoordinate:location.coordinate];
         
         NSDictionary *newLocationData = @{@"latitude": @(location.coordinate.latitude), @"longitude" : @(location.coordinate.longitude)};
-        [[[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName] setObject:newLocationData forKey:kLocationPersistenceKey];
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName];
+        [defaults setObject:newLocationData forKey:kLocationPersistenceKey];
+        [defaults synchronize];
     }
 }
 
