@@ -69,6 +69,12 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 @property (nonatomic, strong) NSIndexPath *previousIndexPath;
 
+/**
+ *  A configurable name for app extension support.
+ */
+
+@property (nonatomic, strong) NSString *defaultsSuiteName;
+
 @end
 
 @implementation MBPlacePickerController
@@ -118,6 +124,9 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
         _serverURL = @"";
         
+        //  A nil value will cause the NSUserDefaults API to fall back to standardUserDefaults.
+        _defaultsSuiteName = nil;
+        
         /**
          *  Flags
          */
@@ -131,7 +140,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
          *  Load the cached location.
          */
         
-        NSDictionary *previousLocationData = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kLocationPersistenceKey];
+        NSDictionary *previousLocationData = [[[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName ] dictionaryForKey:kLocationPersistenceKey];
         
         CGFloat lat = [previousLocationData[@"latitude"] floatValue];
         CGFloat lon = [previousLocationData[@"longitude"] floatValue];
@@ -1001,7 +1010,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         [self.map markCoordinate:location.coordinate];
         
         NSDictionary *newLocationData = @{@"latitude": @(location.coordinate.latitude), @"longitude" : @(location.coordinate.longitude)};
-        [[NSUserDefaults standardUserDefaults] setObject:newLocationData forKey:kLocationPersistenceKey];
+        [[[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName] setObject:newLocationData forKey:kLocationPersistenceKey];
     }
 }
 
