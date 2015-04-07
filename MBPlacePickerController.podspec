@@ -1,7 +1,7 @@
     Pod::Spec.new do |s|
 
       s.name         = "MBPlacePickerController"
-      s.version      = "2.2.6"
+      s.version      = "2.3.0"
       s.summary      = "An open source place picker for iOS."
       s.description  = <<-DESC
     	A view controller for picking a location. I wrote it to be a simple wrapper around automatic location detection, but also to offer manual location selection in case GPS isn't available.

@@ -16,7 +16,7 @@ Getting Started
 ---
 You'll need to find the `MBPlacePickerController` subfolder in the repository and add it to your project. CocoaPods support is experimental, with the following line: 
 
-	pod 'MBPlacePickerController', '~>2.2.9'
+	pod 'MBPlacePickerController', '~>2.3.0'
 
 Dependencies
 ---
@@ -39,6 +39,10 @@ If you want `MBPlacePicker` to request "when-in-use" permissions, add the `NSLoc
 
 > NSLocationWhenInUseUsageDescription | ${PRODUCT_NAME} needs your location to work correctly. 
 
+Support for App Extensions:
+---
+
+If you want the place picker's cached location to be visible to your app extensions, set the `defaultsSuiteName` property on the place picker to match whatever your app group id is. 
 
 Showing a Picker
 ---
