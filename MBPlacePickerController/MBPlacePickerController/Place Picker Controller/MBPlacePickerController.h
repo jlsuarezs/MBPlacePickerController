@@ -65,6 +65,12 @@
 
 @property (nonatomic, assign) BOOL showSearch;
 
+/**
+ *  A configurable name for app extension support.
+ */
+
+@property (nonatomic, strong) NSString *defaultsSuiteName;
+
 #pragma mark - Presenting and Dismissing the Picker
 
 /** ---

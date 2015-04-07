@@ -69,12 +69,6 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
 
 @property (nonatomic, strong) NSIndexPath *previousIndexPath;
 
-/**
- *  A configurable name for app extension support.
- */
-
-@property (nonatomic, strong) NSString *defaultsSuiteName;
-
 @end
 
 @implementation MBPlacePickerController
