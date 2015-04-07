@@ -139,8 +139,21 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
         /**
          *  Load the cached location.
          */
+
+        NSUserDefaults *extensionFriendlyDefaults = [[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName];
+        NSDictionary *previouslySavedDictionary = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kLocationPersistenceKey];
         
-        NSDictionary *previousLocationData = [[[NSUserDefaults alloc] initWithSuiteName:self.defaultsSuiteName ] dictionaryForKey:kLocationPersistenceKey];
+        /**
+         *  Check if the key exists in the legacy user defaults location, pre-extensions.
+         *  If it doesn't exist in the new defaults store, but it's in the old store, copy it over.
+         */
+        
+        if (![extensionFriendlyDefaults dictionaryForKey:kLocationPersistenceKey] && previouslySavedDictionary)
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:previouslySavedDictionary forKey:kLocationPersistenceKey];
+        }
+        
+        NSDictionary *previousLocationData = [extensionFriendlyDefaults dictionaryForKey:kLocationPersistenceKey];
         
         CGFloat lat = [previousLocationData[@"latitude"] floatValue];
         CGFloat lon = [previousLocationData[@"longitude"] floatValue];
