@@ -300,4 +300,16 @@
 {
     return [[[UIDevice currentDevice] systemVersion] floatValue] < 8.0;
 }
+
+#pragma mark - Location Accuracy
+
+- (void)setDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy
+{
+    [self.locationManager setDesiredAccuracy:desiredAccuracy];
+}
+
+- (CLLocationAccuracy)desiredAccuracy
+{
+    return self.locationManager.desiredAccuracy;
+}
 @end

@@ -15,6 +15,12 @@ typedef void(^MBLocationManagerUpdateCompletionBlock)(NSArray *locations, CLHead
 @interface MBLocationManager : NSObject
 
 /**
+ *  Set the desired accuracy.
+ */
+
+@property () CLLocationAccuracy desiredAccuracy;
+
+/**
  *  Singleton access.
  */
 

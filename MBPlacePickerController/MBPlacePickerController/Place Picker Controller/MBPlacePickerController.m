@@ -1114,4 +1114,16 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     [self.tableView reloadData];
 }
 
+#pragma mark - Accuracy
+
+- (void)setDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy
+{
+    [[MBLocationManager sharedManager] setDesiredAccuracy:desiredAccuracy];
+}
+
+- (CLLocationAccuracy)accuracy
+{
+    return [[MBLocationManager sharedManager] desiredAccuracy];
+}
+
 @end

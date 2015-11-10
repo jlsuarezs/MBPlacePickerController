@@ -51,6 +51,12 @@
 @property (nonatomic, strong) CLLocation *location;
 
 /**
+ *  The accuracy of the location.
+ */
+
+@property (assign) CLLocationAccuracy desiredAccuracy;
+
+/**
  *  Decides if the picker dismisses with a location change, or if it waits for the user to dismiss.
  *  If transient, the search state will clear on dismissal.
  *
