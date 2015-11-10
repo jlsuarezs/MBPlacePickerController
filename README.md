@@ -39,11 +39,6 @@ If you want `MBPlacePicker` to request "when-in-use" permissions, add the `NSLoc
 
 > NSLocationWhenInUseUsageDescription | ${PRODUCT_NAME} needs your location to work correctly. 
 
-Support for App Extensions:
----
-
-If you want the place picker's cached location to be visible to your app extensions, set the `defaultsSuiteName` property on the place picker to match whatever your app group id is. 
-
 Showing a Picker
 ---
 To show a place picker, you need to follow three easy steps:
@@ -151,6 +146,11 @@ The map view has a toggle for displaying user location (even if the location is 
 Search
 ---
 Search is included for free in 2.2.0. You can turn it on and off by setting the `showSearch` property of the `MBPlacePickerController`. The default value is `YES`.
+
+A note about app extensions & watchOS 1:
+---
+
+If you want the place picker's cached location to be visible to your app extensions, set the `defaultsSuiteName` property on the place picker to match whatever your app group id is. This only works for watchOS 1.0. Watch OS 2 doesn't support shared `NSUserDefaults` so this doesn't apply.  
 
 License
 ---
