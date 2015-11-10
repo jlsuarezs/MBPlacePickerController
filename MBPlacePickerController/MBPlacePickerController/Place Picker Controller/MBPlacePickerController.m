@@ -1121,7 +1121,7 @@ static NSString *kLocationPersistenceKey = @"com.mosheberman.location-persist-ke
     [[MBLocationManager sharedManager] setDesiredAccuracy:desiredAccuracy];
 }
 
-- (CLLocationAccuracy)accuracy
+- (CLLocationAccuracy)desiredAccuracy
 {
     return [[MBLocationManager sharedManager] desiredAccuracy];
 }
