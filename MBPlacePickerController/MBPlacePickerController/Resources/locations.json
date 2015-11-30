@@ -165,7 +165,7 @@
  "name" : "Melbourne, Australia",
  "longitude" : 144.96298,
  "latitude" : -37.813187,
- "continent" : "Australia"
+ "continent" : "Oceania"
  },
  {
  "name" : "Memphis, Tennessee, USA",
@@ -243,7 +243,7 @@
  "name" : "Perth, Australia",
  "longitude" : 115.8501434326172,
  "latitude" : -31.94866649942838,
- "continent" : "Australia"
+ "continent" : "Oceania"
  },
  {
  "name" : "Philadelphia, Pennsylvania, USA",
@@ -309,7 +309,7 @@
  "name" : "Sydney, Australia",
  "longitude" : 151.207091,
  "latitude" : -33.868901,
- "continent" : "Australia"
+ "continent" : "Oceania"
  },
  {
  "name" : "Tel Aviv, Israel",
@@ -370,5 +370,23 @@
  "latitude" : -33.926,
  "longitude" : 18.423,
  "continent" : "Africa"
+ },
+ {
+ "name" : "Hamilton, New Zealand",
+ "latitude" : -37.7870012,
+ "longitude" : 175.279253,
+ "continent" : "Oceania"
+ },
+ {
+ "name" : "Auckland, New Zealand",
+ "latitude" : -36.8484597,
+ "longitude" : 174.7633315,
+ "continent" : "Oceania"
+ },
+ {
+ "name" : "Wellington, New Zealand",
+ "latitude" : -41.2864603,
+ "longitude" : 174.776236,
+ "continent" : "Oceania"
  }
  ]
